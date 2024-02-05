@@ -5,6 +5,18 @@ class InvoicesController < ApplicationController
 
   def show
     @invoice = Invoice.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.pdf do
+        tmp = Tempfile.new(process_timeout: 30, timeout: 200, pending_connection_errors: true)
+        browser = Ferrum::Browser.new
+        browser.go_to(invoice_url(@invoice))
+        sleep(0.3)
+        browser.pdf(path: tmp)
+        browser.quit
+        send_file tmp, type: "application/pdf", disposition: "inline"
+      end
+    end
   end
 
   def new

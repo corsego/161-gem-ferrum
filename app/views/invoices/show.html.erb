@@ -3,3 +3,8 @@
     <%= render @invoice %>
   </div>
 </div>
+
+<%= link_to "Download PDF", rails_blob_path(@invoice.pdf, disposition: "attachment"), class: "no-print", target: :_blank if @invoice.pdf.attached? %>
+<%= link_to "View PDF", rails_blob_path(@invoice.pdf, disposition: "inline"), class: "no-print", target: :_blank if @invoice.pdf.attached? %>
+<%= link_to "Download as image", rails_blob_path(@invoice.image, disposition: "attachment"), class: "no-print", target: :_blank if @invoice.image.attached? %>
+<%= link_to "View as image", rails_blob_path(@invoice.image, disposition: "inline"), class: "no-print", target: :_blank if @invoice.image.attached? %>
